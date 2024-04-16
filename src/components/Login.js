@@ -43,7 +43,6 @@ const Login = () => {
                                 onChange={(e) => handleSetFormData('email', e)}
                                 value={formData?.['email'] || ''}
                             />
-
                             <input
                                 type="text"
                                 placeholder="Enter password"
