@@ -4,6 +4,7 @@ import Header from './Header';
 const Login = () => {
 
     const [formData, setFormData] = useState({});
+    const [isSignInForm, setIsSignInForm] = useState(true);
     console.log(formData)
     const submitForm = (e) => {
         e.preventDefault();
@@ -11,6 +12,10 @@ const Login = () => {
 
     const handleSetFormData = (name, e) => {
         setFormData((prev) => ({ ...prev, [name]: e.target.value }));
+    }
+
+    const toggleSignForm = () => {
+        setIsSignInForm(!isSignInForm)
     }
 
     return (
@@ -23,13 +28,18 @@ const Login = () => {
                     alt="coverimg"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex justify-center">
-                    <div className="w-2/6 p-10 border border-black bg-black rounded-md bg-opacity-70 text-white h-96 mt-32">
+                    <div className="w-2/6 p-10 border border-black bg-black rounded-md bg-opacity-70 text-white h-max mt-32">
                         <form className="" onSubmit={submitForm} >
-                            <p className="font-bold text-3xl mb-6">Sign In</p>
+                            <p className="font-bold text-3xl">{isSignInForm ? 'Sign In' : 'Sign Up'}</p>
+                            {!isSignInForm && <input
+                                type="text"
+                                placeholder="Full Name"
+                                className="mt-5 w-full h-16 px-3 border border-gray-400 bg-transparent rounded-md text-white"
+                            />}
                             <input
                                 type="text"
                                 placeholder="Enter email or mobile number"
-                                className="w-full h-12 px-3 border border-gray-400 bg-transparent rounded-md text-white"
+                                className="w-full h-16 px-3 border mt-5 border-gray-400 bg-transparent rounded-md text-white"
                                 onChange={(e) => handleSetFormData('email', e)}
                                 value={formData?.['email'] || ''}
                             />
@@ -37,9 +47,11 @@ const Login = () => {
                             <input
                                 type="text"
                                 placeholder="Enter password"
-                                className="mt-5 w-full h-12 px-3 border border-gray-400 bg-transparent rounded-md text-white"
+                                className="mt-5 w-full h-16 px-3 border border-gray-400 bg-transparent rounded-md text-white"
                             />
-                            <button type="submit" className="mt-6 w-full h-12 bg-red-700 text-white rounded-md">Sign In</button>
+                            <button type="submit" className="mt-6 w-full h-12 bg-red-700 text-white rounded-md">{isSignInForm ? 'Sign In' : 'Sign Up'}</button>
+                            <p onClick={toggleSignForm} className=" cursor-pointer font-medium text-sm mb-6 mt-5">{isSignInForm ? 'New to Netflix? Sign Up Now' : 'Already a user!. Sign In'}</p>
+
                         </form>
                     </div>
                 </div>
