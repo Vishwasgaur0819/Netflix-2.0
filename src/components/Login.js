@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react';
 import Header from './Header';
 import { checkValidateData } from '../utills/validate';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../utills/firebase';
 
-const Login = () => {
+// import { useDispatch } from 'react-redux';
 
+const Login = () => {
     const [formData, setFormData] = useState({});
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -26,9 +27,11 @@ const Login = () => {
     }
 
     const handleButtonClick = () => {
+
         // validate the form data 
-        let e = email.current.value;
-        let p = password.current.value;
+        let e = email?.current?.value;
+        let p = password?.current?.value;
+        let n = name?.current?.value;
         let errorMessage = checkValidateData(e, p)
         setErrorMessage(errorMessage);
         if (errorMessage) return;
@@ -37,8 +40,19 @@ const Login = () => {
 
             createUserWithEmailAndPassword(auth, e, p)
                 .then((userCredential) => {
-                    const user = userCredential.user;
-                    // console.log(user);
+                    let user = userCredential.user;
+                    updateProfile(user, {
+                        displayName: n, photoURL: "https://example.com/jane-q-user/profile.jpg",
+                    }).then(() => {
+                        const { uid, email, displayName, photoUrl } = user;
+                        // dispatch(addUser({ uid, email, displayName: n, photoURL: "https://example.com/jane-q-user/profile.jpg" }))
+                        // navigate('/browse');
+                    }).catch((error) => {
+                        // alert(error)
+                        // An error occurred
+                        // ...
+                    });
+
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -65,15 +79,16 @@ const Login = () => {
         }
     }
 
+
     return (
         <div className="relative">
             <Header />
             <div className="m-auto relative">
-                <img
+                {/* <img
                     className="h-full w-full shadow-lg"
                     src="https://assets.nflxext.com/ffe/siteui/vlv3/c1366fb4-3292-4428-9639-b73f25539794/3417bf9a-0323-4480-84ee-e1cb2ff0966b/IN-en-20240408-popsignuptwoweeks-perspective_alpha_website_large.jpg"
                     alt="coverimg"
-                />
+                /> */}
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex justify-center">
                     <div className="w-1/4 p-10 border border-black bg-black rounded-md bg-opacity-70 text-white h-max mt-32">
                         <form className="" onSubmit={submitForm} >
@@ -101,7 +116,7 @@ const Login = () => {
                             />
                             {errorMessage && <p className=" cursor-pointer font-medium text-sm mt-5 text-red-600">{errorMessage}</p>}
                             <button type="submit" onClick={handleButtonClick} className="mt-6 w-full h-12 bg-red-700 text-white rounded-md">{isSignInForm ? 'Sign In' : 'Sign Up'}</button>
-                            <p onClick={toggleSignForm} className=" cursor-pointer font-medium text-sm  mt-5">{isSignInForm ? 'New to Netflix? Sign Up Now' : 'Already a user!. Sign In'}</p>
+                            <p onClick={toggleSignForm} className=" cursor-pointer font-medium text-sm  mt-5">{isSignInForm ? 'Sign Up Now' : 'Already a user!. Sign In'}</p>
 
                         </form>
                     </div>
