@@ -17,7 +17,7 @@
 - Update profile
 - Fixed bug (made CheckRoute HOC for checking authentication)
 - unsubsribe to the onAuthStatusChanged callback.
-- Add hand coded values to the constant file. (mandotory);
+- Add hard coded values to the constant file. (good practice);
 
 # Features
 
