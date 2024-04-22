@@ -5,6 +5,7 @@ const userSlice = createSlice({
     initialState: {},
     reducers: {
         addUser: (state, action) => {
+            console.log("data check in redux action.payload", action.payload);
             return action.payload
         },
         removeUser: (state, action) => {

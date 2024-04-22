@@ -3,10 +3,11 @@ import Header from './Header';
 import { checkValidateData } from '../utills/validate';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../utills/firebase';
-
-// import { useDispatch } from 'react-redux';
+import { addUser } from '../utills/appStore/slices/userSlice';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({});
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -42,10 +43,10 @@ const Login = () => {
                 .then((userCredential) => {
                     let user = userCredential.user;
                     updateProfile(user, {
-                        displayName: n, photoURL: "https://example.com/jane-q-user/profile.jpg",
+                        displayName: n, photoURL: "https://avatars.githubusercontent.com/u/95771729?v=4",
                     }).then(() => {
-                        const { uid, email, displayName, photoUrl } = user;
-                        // dispatch(addUser({ uid, email, displayName: n, photoURL: "https://example.com/jane-q-user/profile.jpg" }))
+                        const { uid, email, displayName } = user;
+                        dispatch(addUser({ uid, email, displayName: displayName, photoURL: "https://avatars.githubusercontent.com/u/95771729?v=4" }))
                         // navigate('/browse');
                     }).catch((error) => {
                         // alert(error)
@@ -55,7 +56,7 @@ const Login = () => {
 
                 })
                 .catch((error) => {
-                    const errorCode = error.code;
+                    // const errorCode = error.code;
                     const errorMessage = error.message;
                     setErrorMessage(errorMessage);
                 });
@@ -71,7 +72,7 @@ const Login = () => {
                     // ...
                 })
                 .catch((error) => {
-                    const errorCode = error.code;
+                    // const errorCode = error.code;
                     const errorMessage = error.message;
                     setErrorMessage(errorMessage);
                 });
@@ -84,11 +85,11 @@ const Login = () => {
         <div className="relative">
             <Header />
             <div className="m-auto relative">
-                {/* <img
+                <img
                     className="h-full w-full shadow-lg"
                     src="https://assets.nflxext.com/ffe/siteui/vlv3/c1366fb4-3292-4428-9639-b73f25539794/3417bf9a-0323-4480-84ee-e1cb2ff0966b/IN-en-20240408-popsignuptwoweeks-perspective_alpha_website_large.jpg"
                     alt="coverimg"
-                /> */}
+                />
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex justify-center">
                     <div className="w-1/4 p-10 border border-black bg-black rounded-md bg-opacity-70 text-white h-max mt-32">
                         <form className="" onSubmit={submitForm} >
