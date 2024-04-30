@@ -25,6 +25,7 @@ const Login = () => {
 
     const toggleSignForm = () => {
         setIsSignInForm(!isSignInForm)
+        
     }
 
     const handleButtonClick = () => {
